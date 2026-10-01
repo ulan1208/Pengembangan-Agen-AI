@@ -1,0 +1,115 @@
+{
+  "name": "Chatbot Web",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nSelamat datang di Informsi Akademik",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "de81513d-b0f0-451f-ac26-7a3254b56d35",
+      "name": "When chat message received",
+      "webhookId": "b499a845-7059-4bc1-8424-29ace217ac5a"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "Anda adalah chatbot informasi akademik untuk mahasiswa.\n\nTugas Anda adalah membantu mahasiswa menjawab pertanyaan seputar kegiatan perkuliahan, tugas, ujian, cara mengatur waktu belajar, dan tips belajar secara umum.\n\nJawablah menggunakan bahasa Indonesia yang jelas, ramah, dan mudah dipahami oleh mahasiswa. Berikan jawaban yang cukup jelas tetapi tidak terlalu panjang.\n\nJika pengguna memberikan pertanyaan lanjutan, gunakan informasi dari percakapan sebelumnya untuk memahami konteks pertanyaannya.\n\nJangan mengarang informasi yang tidak diketahui. Jika informasi yang dibutuhkan tidak tersedia, sampaikan dengan jujur bahwa informasi tersebut belum tersedia dan berikan saran umum yang masih berkaitan.\n\nJika pertanyaan tidak berhubungan dengan akademik atau perkuliahan, jelaskan dengan sopan bahwa chatbot ini berfokus pada informasi akademik mahasiswa."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "0f0c2b53-53f9-4e81-98c5-d63940ec3b84",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        160
+      ],
+      "id": "8ac8842a-2647-4423-ac8f-7c17c123e75b",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "OS2Cw3ssTtosrw86",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        336,
+        176
+      ],
+      "id": "0df08867-bf11-4ebd-a51c-576a3df417bb",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "6d61fd83-63b3-4941-a426-85430ff01cab",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "436399cfc0e1c95b94a55471f8b6981157b2d1d7c983c600397f9c731a780036"
+  },
+  "nodeGroups": [],
+  "id": "xvrAOYAOSw30Xfto",
+  "tags": []
+}
